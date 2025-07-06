@@ -2,87 +2,86 @@ import { useEffect, useState } from "react";
 import TodoItem from "./TodoItem";
 import { Construction } from "lucide-react";
 
-type Priority = "Urgente" | "Moyenne" | "Basse"
+type Priority = "Urgente" | "Moyenne" | "Basse";
 
 type Todo = {
   id: number;
   text: string;
-  priority: Priority
-}
+  priority: Priority;
+};
 
 function App() {
-  const [input, setInput] = useState<string>("")
-  const [priority, setPriority] = useState<Priority>("Moyenne")
+  const [input, setInput] = useState<string>("");
+  const [priority, setPriority] = useState<Priority>("Moyenne");
 
-  const savedTodos = localStorage.getItem("todos")
-  const initialTodos = savedTodos ? JSON.parse(savedTodos) : []
-  const [todos, setTodos] = useState<Todo[]>(initialTodos)
-  const [filter, setFilter] = useState<Priority | "Tous">("Tous")
+  const savedTodos = localStorage.getItem("todos");
+  const initialTodos = savedTodos ? JSON.parse(savedTodos) : [];
+  const [todos, setTodos] = useState<Todo[]>(initialTodos);
+  const [filter, setFilter] = useState<Priority | "Tous">("Tous");
 
   useEffect(() => {
-    localStorage.setItem("todos", JSON.stringify(todos))
-  }, [todos])
+    localStorage.setItem("todos", JSON.stringify(todos));
+  }, [todos]);
 
   function addTodo() {
     if (input.trim() == "") {
-      return
+      return;
     }
 
     const newTodo: Todo = {
       id: Date.now(),
       text: input.trim(),
-      priority: priority
-    }
+      priority: priority,
+    };
 
-    const newTodos = [newTodo, ...todos]
-    setTodos(newTodos)
-    setInput("")
-    setPriority("Moyenne")
-    console.log(newTodos)
+    const newTodos = [newTodo, ...todos];
+    setTodos(newTodos);
+    setInput("");
+    setPriority("Moyenne");
+    console.log(newTodos);
   }
 
-  let filteredTodos: Todo[] = []
+  let filteredTodos: Todo[] = [];
 
   if (filter === "Tous") {
-    filteredTodos = todos
+    filteredTodos = todos;
   } else {
-    filteredTodos = todos.filter((todo) => todo.priority === filter)
+    filteredTodos = todos.filter((todo) => todo.priority === filter);
   }
 
-  const urgentCount = todos.filter((t) => t.priority === "Urgente").length
-  const mediumCount = todos.filter((t) => t.priority === "Moyenne").length
-  const lowCount = todos.filter((t) => t.priority === "Basse").length
-  const totalCount = todos.length
+  const urgentCount = todos.filter((t) => t.priority === "Urgente").length;
+  const mediumCount = todos.filter((t) => t.priority === "Moyenne").length;
+  const lowCount = todos.filter((t) => t.priority === "Basse").length;
+  const totalCount = todos.length;
 
   function deleteTodo(id: number) {
-    const newTodos = todos.filter((todo) => todo.id !== id)
-    setTodos(newTodos)
+    const newTodos = todos.filter((todo) => todo.id !== id);
+    setTodos(newTodos);
   }
 
-  const [selectedTodos, setSelectedTodos] = useState<Set<number>>(new Set())
-
+  const [selectedTodos, setSelectedTodos] = useState<Set<number>>(new Set());
 
   function toggleSelectTodo(id: number) {
-    const newSelected = new Set(selectedTodos)
+    const newSelected = new Set(selectedTodos);
     if (newSelected.has(id)) {
-      newSelected.delete(id)
+      newSelected.delete(id);
     } else {
-      newSelected.add(id)
+      newSelected.add(id);
     }
-    setSelectedTodos(newSelected)
+    setSelectedTodos(newSelected);
   }
 
   function finishSelected() {
     const newTodos = todos.filter((todo) => {
       if (selectedTodos.has(todo.id)) {
-        return false
+        return false;
       } else {
-        return true
+        return true;
       }
-    })
+    });
 
-    setTodos(newTodos)
-    setSelectedTodos(new Set())
+    setTodos(newTodos);
+    setSelectedTodos(new Set());
   }
 
   return (
@@ -113,25 +112,33 @@ function App() {
           <div className="flex items-center justify-between">
             <div className="flex flex-wrap gap-4">
               <button
-                className={`btn btn-soft ${filter === "Tous" ? "btn-primary" : ""}`}
+                className={`btn btn-soft ${
+                  filter === "Tous" ? "btn-primary" : ""
+                }`}
                 onClick={() => setFilter("Tous")}
               >
                 Tous ({totalCount})
               </button>
               <button
-                className={`btn btn-soft ${filter === "Urgente" ? "btn-primary" : ""}`}
+                className={`btn btn-soft ${
+                  filter === "Urgente" ? "btn-primary" : ""
+                }`}
                 onClick={() => setFilter("Urgente")}
               >
                 Urgente ({urgentCount})
               </button>
               <button
-                className={`btn btn-soft ${filter === "Moyenne" ? "btn-primary" : ""}`}
+                className={`btn btn-soft ${
+                  filter === "Moyenne" ? "btn-primary" : ""
+                }`}
                 onClick={() => setFilter("Moyenne")}
               >
                 Moyenne ({mediumCount})
               </button>
               <button
-                className={`btn btn-soft ${filter === "Basse" ? "btn-primary" : ""}`}
+                className={`btn btn-soft ${
+                  filter === "Basse" ? "btn-primary" : ""
+                }`}
                 onClick={() => setFilter("Basse")}
               >
                 Basse ({lowCount})
@@ -144,9 +151,7 @@ function App() {
             >
               Finir la sélection ({selectedTodos.size})
             </button>
-
           </div>
-
 
           {filteredTodos.length > 0 ? (
             <ul className="divide-y divide-primary/20">
@@ -164,7 +169,10 @@ function App() {
           ) : (
             <div className="flex justify-center items-center flex-col p-5">
               <div>
-                <Construction strokeWidth={1} className="w-40 h-40 text-primary" />
+                <Construction
+                  strokeWidth={1}
+                  className="w-40 h-40 text-primary"
+                />
               </div>
               <p className="text-sm">Aucune tâche pour ce filtre</p>
             </div>
@@ -172,7 +180,7 @@ function App() {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
