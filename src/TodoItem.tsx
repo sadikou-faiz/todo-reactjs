@@ -1,7 +1,7 @@
 import { Trash } from "lucide-react";
 
 type Priority = "Urgente" | "Moyenne" | "Basse";
-// test refus de commit / fork
+// test of refus de commit / fork /
 type Todo = {
   id: number;
   text: string;
