@@ -1,7 +1,7 @@
 import { Trash } from "lucide-react";
 
 type Priority = "Urgente" | "Moyenne" | "Basse";
-// pour l'aaces refuser juste un test commit
+// test refus de commit / fork
 type Todo = {
   id: number;
   text: string;
